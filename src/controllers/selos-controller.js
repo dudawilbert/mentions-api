@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
-const Mentions = mongoose.model('Mentions');
+const Selos = mongoose.model('Selos');
 
 // list
-exports.listMentions = async (req, res) => {
+exports.listSelos = async (req, res) => {
   try {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    const data = await Mentions.find({});
+    const data = await Selos.find({});
     res.status(200).send(data);
   } catch (e) {
     res.status(500).send({message: 'Falha ao carregar as menções.'});
@@ -14,9 +14,9 @@ exports.listMentions = async (req, res) => {
 };
 
 // create
-exports.createMention = async (req, res) => {
+exports.createSelo = async (req, res) => {
   try {
-    const mention = new Mentions({
+    const mention = new Selos({
       friend: req.body.friend,
       mention: req.body.mention
     });
