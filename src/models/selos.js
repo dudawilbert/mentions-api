@@ -25,6 +25,40 @@ const schema = new Schema({
   essencia: {
     type: String,
     required: true
+  },
+  arquetipo: {
+    type: Object,
+    required: true,
+    children: {
+      nome: {
+        type: String,
+        required: true,
+      },
+      img: {
+        type: String,
+        required: true,
+      },
+      descricao: {
+        type: String,
+        required: true,
+      }
+    }
+  },
+  img: {
+    type: String,
+    required: true
+  },
+  palavrasChave: {
+    type: String,
+    required: true
+  },
+  descricao: {
+    type: String,
+    required: true
+  },
+  sobreMim: {
+    type: String,
+    required: true
   }
 });
 

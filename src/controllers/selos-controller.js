@@ -1,33 +1,44 @@
-const mongoose = require('mongoose');
-const Selos = mongoose.model('Selos');
-
+const repository = require('../repositories/selos-repository');
 // list
-exports.listSelos = async (req, res) => {
+exports.listSelosCompleto = async (req, res) => {
   try {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    const data = await Selos.find({});
+    const data = await repository.listSelosCompleto();
     res.status(200).send(data);
   } catch (e) {
-    res.status(500).send({message: 'Falha ao carregar as menções.'});
+    res.status(500).send({message: 'Falha ao carregar os selos!'});
+  }
+};
+exports.listSelosBasico = async (req, res) => {
+  try {
+    const data = await repository.listSelosBasico();
+    res.status(200).send(data);
+  } catch (e) {
+    res.status(500).send({message: 'Falha ao carregar os selos!'});
   }
 };
 
 // create
 exports.createSelo = async (req, res) => {
   try {
-    const mention = new Selos({
-      friend: req.body.friend,
-      mention: req.body.mention
+    await repository.createSelo({
+      nome: req.body.nome,
+      numero: req.body.numero,
+      maia: req.body.maia,
+      poder: req.body.poder,
+      acao: req.body.acao,
+      essencia: req.body.essencia,
+      arquetipo: {
+          nome: req.body.arquetipo.nome,
+          img: req.body.arquetipo.img,
+          descricao: req.body.arquetipo.descricao
+      },
+      img: req.body.img,
+      palavrasChave: req.body.palavrasChave,
+      descricao: req.body.descricao,
+      sobreMim: req.body.sobreMim
     });
-
-    console.log('mention', mention)
-
-    await mention.save();
-
-    res.status(201).send({message: 'Menção cadastrada com sucesso!'});
+    res.status(201).send({message: 'Selo cadastrado com sucesso!'});
   } catch (e) {
-    console.log('body', req.body)
-    res.status(500).send({message: `Falha ao cadastrar a menção. ${e} + ${req.body}`});
+    res.status(500).send({message: 'Falha ao cadastrar o selo.'});
   }
 };

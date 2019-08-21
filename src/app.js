@@ -41,6 +41,7 @@ process.on('SIGINT', () => {
 app.use(cors({origin: 'http://localhost:8080'}));
 // Load models
 const Mentions = require('./models/mentions');
+const Selos = require('./models/selos');
 
 // Load routes
 const indexRoutes = require('./routes/index-routes');
@@ -49,7 +50,7 @@ app.use('/', indexRoutes);
 const mentionsRoutes = require('./routes/mentions-routes');
 app.use('/mentions', mentionsRoutes);
 
-// const selosRoutes = require('./routes/selos-routes');
-// app.use('/selos', selosRoutes);
+const selosRoutes = require('./routes/selos-routes');
+app.use('/selos', selosRoutes);
 
 module.exports = app;
