@@ -5,14 +5,13 @@ require('dotenv').config();
 
 // App
 const app = express();
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 const DATABASE_CONNECTION_STRING = 'mongodb+srv://dudawilbert:Q33XTsgdPWRJanYB@cluster0-iqbtp.mongodb.net/test?retryWrites=true&w=majority'
 // Database
 mongoose.connect(DATABASE_CONNECTION_STRING, {
     useNewUrlParser: true,
-    useFindAndModify: true,
+    useFindAndModify: false,
     useCreateIndex: true
 });
 
@@ -42,6 +41,8 @@ app.use(cors({origin: 'http://localhost:8080'}));
 // Load models
 const Mentions = require('./models/mentions');
 const Selos = require('./models/selos');
+const Tons = require('./models/tons');
+const Calendario = require('./models/calendario');
 
 // Load routes
 const indexRoutes = require('./routes/index-routes');
@@ -52,5 +53,8 @@ app.use('/mentions', mentionsRoutes);
 
 const selosRoutes = require('./routes/selos-routes');
 app.use('/selos', selosRoutes);
+
+const calendarioRoutes = require('./routes/calendario-routes');
+app.use('/calendario', calendarioRoutes);
 
 module.exports = app;
