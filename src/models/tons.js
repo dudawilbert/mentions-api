@@ -6,6 +6,10 @@ const schema = new Schema({
     type: String,
     required: true
   },
+  nomeFeminino: {
+    type: String,
+    required: true
+  },
   numero: {
     type: String,
     required: true

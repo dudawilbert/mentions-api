@@ -11,6 +11,7 @@ exports.listSincronario = async (req, res) => {
     res.status(500).send({message: 'Falha ao carregar as menções!'});
   }
 };
+
 // filtra o matriz por numero (soma lista calendario)
 exports.listSincronarioId = async (req, res) => {
   try {
@@ -20,6 +21,21 @@ exports.listSincronarioId = async (req, res) => {
     res.status(500).send({message: 'Falha ao carregar as menções!'});
   }
 };
+
+// desconre a lua atual
+exports.luaAtual = async (req, res) => {
+  try {
+    console.log('luaAtual controler')
+    var tom = await this.calcTomLunar(req.params.currentDate)
+    console.log('tom', tom)
+    const data = await repository.luaAtual(tom);
+    res.status(200).send(data[0]);
+  } catch (e) {
+    res.status(500).send({message: 'Falha ao carregar as menções!'});
+  }
+};
+
+// calcula os dias gregoriano e o valor do tzolkin de um mes no calendairo 13 luas
 exports.calcMonth = async (currentDate) => {
   try {
     var year = moment(currentDate, 'YYYY-MM-DD').format('YYYY')
@@ -78,7 +94,8 @@ exports.calcMonth = async (currentDate) => {
     console.log('erro calcula mes tzolkin', erro)
   }
 }
-  
+
+// descobre o kin do dia
 exports.calcKin = async (currentDate) => {
   try {
     // descobri o codigo do mes
@@ -151,21 +168,57 @@ exports.calcKin = async (currentDate) => {
   }
 }
 
+// descobre o tom lunar do mes
+exports.calcTomLunar = async (currentDate, res = true) => {
+  try {
+    console.log('currentDate', currentDate)
+    var month = moment(currentDate, 'YYYY-MM-DD').format('MM')
+    var day = moment(currentDate, 'YYYY-MM-DD').format('DD')
+    var tom = 0
+    if ((parseInt(month) === 7 && parseInt(day) >= 26) || (parseInt(month) === 8 && parseInt(day) <= 22)) {
+      tom = 1
+    } else if ((parseInt(month) === 8 && parseInt(day) >= 23) || (parseInt(month) === 9 && parseInt(day) <= 19)) {
+      tom = 2
+    } else if ((parseInt(month) === 9 && parseInt(day) >= 20) || (parseInt(month) === 10 && parseInt(day) <= 17)) {
+      tom = 3
+    } else if ((parseInt(month) === 10 && parseInt(day) >= 18) || (parseInt(month) === 11 && parseInt(day) <= 14)) {
+      tom = 4
+    } else if ((parseInt(month) === 11 && parseInt(day) >= 15) || (parseInt(month) === 12 && parseInt(day) <= 12)) {
+      tom = 5
+    } else if ((parseInt(month) === 12 && parseInt(day) >= 13) || (parseInt(month) === 1 && parseInt(day) <= 9)) {
+      tom = 6
+    } else if ((parseInt(month) === 1 && parseInt(day) >= 10) || (parseInt(month) === 2 && parseInt(day) <= 6)) {
+      tom = 7
+    } else if ((parseInt(month) === 2 && parseInt(day) >= 7) || (parseInt(month) === 3 && parseInt(day) <= 6)) {
+      tom = 8
+    } else if ((parseInt(month) === 3 && parseInt(day) >= 7) || (parseInt(month) === 4 && parseInt(day) <= 3)) {
+      tom = 9
+    } else if ((parseInt(month) === 4 && parseInt(day) >= 4) || (parseInt(month) === 5 && parseInt(day) <= 1)) {
+      tom = 10
+    } else if ((parseInt(month) === 5 && parseInt(day) >= 2) || (parseInt(month) === 5 && parseInt(day) <= 29)) {
+      tom = 11
+    } else if ((parseInt(month) === 5 && parseInt(day) >= 30) || (parseInt(month) === 6 && parseInt(day) <= 26)) {
+      tom = 12
+    } else if ((parseInt(month) === 6 && parseInt(day) >= 27) || (parseInt(month) === 7 && parseInt(day) <= 24)) {
+      tom = 13
+    }
+    return tom
+  } catch (erro) {
+
+  }
+}
 // logica para desocbri o numero da matriz
 exports.listCalendario = async (req, res) => {
+  console.log('listCalendario')
   try {
     // DESCOBRIR OS KINS DIARIOS E TONS
     // req.params.currentDate esta no formato DD/MM/YYYY
     const currentDate = moment(req.params.currentDate, 'YYYY-MM-DD').format('YYYY-MM-DD')
     if (req.params.mes) {
       var month = await this.calcMonth(currentDate)
+      var tomLunar = await this.calcTomLunar(currentDate)
+      const monthTom = await repository.listTomSincronario(tomLunar);
       var monthFinsh = []
-    //   daysWeek: [
-    //     [1, 2, 3, 4, 5, 6, 7],
-    //     [8, 9, 10, 11, 12, 13, 14],
-    //     [15, 16, 17, 18, 19, 20, 21],
-    //     [22, 23, 24, 25, 26, 27, 28],
-    // ]
       var semana1 = []
       var semana2 = []
       var semana3 = []
@@ -190,9 +243,11 @@ exports.listCalendario = async (req, res) => {
         } else if (index + 1 > 21 && index + 1 <= 28) {
           semana4.push(obj)
         }
-        monthFinsh = [semana1, semana2, semana3, semana4]
+        monthFinsh = {
+          mes: monthTom[0],
+          dias: [semana1, semana2, semana3, semana4]
+        }
       }
-      console.log(semana1, semana2, semana3, semana4)
       res.status(200).send(monthFinsh);
     } else {
       var total = await this.calcKin(currentDate)

@@ -7,7 +7,7 @@ exports.listSelosCompleto = async () => {
 };
 
 exports.listSelosBasico = async () => {
-  const res = await Selos.find({}, 'nome poder numero acao essencia img palavrasChave');
+  const res = await Selos.find({}, 'nome numero');
   return res;
 };
 exports.listSelosId = async (id) => {
@@ -15,7 +15,7 @@ exports.listSelosId = async (id) => {
   return res;
 };
 exports.listSelosCalendario = async (id) => {
-  const res = await Selos.find({numero: id}, 'nome numero poder acao essencia img palavrasChave');
+  const res = await Selos.find({numero: id}, 'nome numero');
   return res;
 };
 

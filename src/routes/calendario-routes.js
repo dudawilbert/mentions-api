@@ -4,6 +4,7 @@ const CalendarioController = require('../controllers/calendario-controller');
 
 // gets
 router.get('/:currentDate/:mes', CalendarioController.listCalendario);
+router.get('/luaAtual/:currentDate', CalendarioController.luaAtual);
 router.get('/sincronario', CalendarioController.listSincronario);
 router.get('/sincronario/:id', CalendarioController.listSincronarioId);
 // post

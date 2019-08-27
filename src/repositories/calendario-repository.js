@@ -16,14 +16,17 @@ exports.listSincronarioId = async (id) => {
   return res;
 };
 exports.listSeloSincronario = async (selo) => {
-  const res = await Selos.find({numero: selo}, 'nome numero img');
+  const res = await Selos.find({numero: selo}, 'nome numero');
   return res;
 };
 exports.listTomSincronario = async (tom) => {
-  const res = await Tons.find({numero: tom}, 'nome numero img');
+  const res = await Tons.find({numero: tom}, 'nome nomeFeminino numero');
   return res;
 };
-
+exports.luaAtual = async (tom) => {
+  const res = await Tons.find({numero: tom}, 'nome numero nomeFeminino');
+  return res;
+};
 exports.createCalendario = async data => {
   const selo = new Calendario(data);
   await selo.save();
