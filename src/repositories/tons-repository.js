@@ -7,11 +7,19 @@ exports.listTonsCompleto = async () => {
 };
 
 exports.listTonsBasico = async () => {
-  const res = await Tons.find({}, 'nome poder acao essencia img palavrasChave');
+  const res = await Tons.find({}, 'nome numero img');
   return res;
 };
 exports.listTonsId = async (id) => {
+  const res = await Tons.find({numero: id}, 'nome nomeFeminino numero');
+  return res;
+};
+exports.listTonsIdCompleto = async (id) => {
   const res = await Tons.find({numero: id});
+  return res;
+};
+exports.listTonsIdCalendario = async (id) => {
+  const res = await Tons.find({numero: id}, 'nome numero poder acao essencia img descricao');
   return res;
 };
 

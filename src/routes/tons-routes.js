@@ -5,6 +5,8 @@ const TonsController = require('../controllers/tons-controller');
 // gets
 router.get('/', TonsController.listTonsCompleto);
 router.get('/basico', TonsController.listTonsBasico);
+router.get('/:id/completo', TonsController.listTonsIdCompleto);
+router.get('/:id/calendario', TonsController.listTonsIdCalendario);
 router.get('/:id', TonsController.listTonsId);
 // post
 router.post('/', TonsController.createTom);

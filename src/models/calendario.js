@@ -13,6 +13,11 @@ const schema = new Schema({
   tom: {
     type: String,
     required: true
+  },
+  portal: {
+    type: Boolean,
+    required: false,
+    default: false
   }
 });
 

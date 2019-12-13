@@ -25,6 +25,22 @@ exports.listTonsId = async (req, res) => {
     res.status(500).send({message: 'Falha ao carregar os tons!'});
   }
 };
+exports.listTonsIdCompleto = async (req, res) => {
+  try {
+    const data = await repository.listTonsIdCompleto(req.params.id);
+    res.status(200).send(data[0]);
+  } catch (e) {
+    res.status(500).send({message: 'Falha ao carregar os tons!'});
+  }
+};
+exports.listTonsIdCalendario = async (req, res) => {
+  try {
+    const data = await repository.listTonsIdCalendario(req.params.id);
+    res.status(200).send(data[0]);
+  } catch (e) {
+    res.status(500).send({message: 'Falha ao carregar os tons!'});
+  }
+};
 
 // create
 exports.createTom = async (req, res) => {

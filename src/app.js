@@ -43,6 +43,10 @@ const Mentions = require('./models/mentions');
 const Selos = require('./models/selos');
 const Tons = require('./models/tons');
 const Calendario = require('./models/calendario');
+const Plasmas = require('./models/plasmas');
+const Luas = require('./models/luas');
+const Oraculo = require('./models/oraculo');
+const OndaEncantada = require('./models/ondaEncantada');
 
 // Load routes
 const indexRoutes = require('./routes/index-routes');
@@ -57,7 +61,19 @@ app.use('/tons', tonsRoutes);
 const selosRoutes = require('./routes/selos-routes');
 app.use('/selos', selosRoutes);
 
+const plasmasRoutes = require('./routes/plasmas-routes');
+app.use('/plasmas', plasmasRoutes);
+
+const luasRoutes = require('./routes/luas-routes');
+app.use('/luas', luasRoutes);
+
 const calendarioRoutes = require('./routes/calendario-routes');
 app.use('/calendario', calendarioRoutes);
+
+const oraculoRoutes = require('./routes/oraculo-routes');
+app.use('/oraculo', oraculoRoutes);
+
+const ondaEncantadaRoutes = require('./routes/ondaEncantada-routes');
+app.use('/ondaEncantada', ondaEncantadaRoutes);
 
 module.exports = app;
